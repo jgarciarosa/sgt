@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import './grid.css'
 import axios from 'axios';
+import { FaCheckCircle, FaEdit } from 'react-icons/fa';
+import { GrInProgress } from 'react-icons/gr';
 
 interface Task {
     id: number,
@@ -149,13 +151,13 @@ const Grid: React.FC = () => {
                 <div>
                      {/* Botões fora do Grid */}
                     <div className="buttons">
-                        <button onClick={() => setFilter('all')}> 
+                        <button className={filter === 'all' ? 'active' : ''} onClick={() => setFilter('all')}> 
                             Mostrar todas 
                         </button>
-                        <button onClick={() => setFilter('finished')}> 
+                        <button className={filter === 'finished' ? 'active' : ''} onClick={() => setFilter('finished')}> 
                             Mostrar concluídas 
                         </button>
-                        <button onClick={() => setFilter('unfinished')}> 
+                        <button className={filter === 'unfinished' ? 'active' : ''} onClick={() => setFilter('unfinished')}> 
                             Mostrar Não Concluídas 
                         </button>
                         <button  onClick={handleAddTaskClick}> 
@@ -173,7 +175,9 @@ const Grid: React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filterData(data).map((task) => (
+                        {filterData(data)
+                        .sort((a, b) => Number(a.status) - Number(b.status))
+                        .map((task) => (
                             <tr key={task.id}>
                                 <td>{task.title}</td>
                                 <td>{task.description}</td>
@@ -182,12 +186,16 @@ const Grid: React.FC = () => {
                                         e.stopPropagation();
                                         changeStatus(task.id);
                                     }}>
-                                        {task.status ? 'Concluída' : 'Não Concluída'}
+                                        {task.status ? (
+                                            <FaCheckCircle style={{ color: 'green', cursor: 'pointer' }} />
+                                        ) : (
+                                            <GrInProgress style={{ color: 'yellow', cursor: 'pointer' }} />
+                                        )}
                                     </span>
                                 </td>
                                 <td>
                                     <span className='edit-button' onClick={() => handleEditTaskClick(task)}>
-                                        Editar
+                                        <FaEdit style={{ color: 'white', cursor: 'pointer' }} />
                                     </span>
                                 </td>
                             </tr>
