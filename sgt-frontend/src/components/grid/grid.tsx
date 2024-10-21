@@ -65,6 +65,57 @@ const Grid: React.FC = () => {
         setTaskSelected(null);
     };
 
+    // Função para salvar dados na api
+    const handleSave = () => {
+        if (taskSelected) {
+            // Atualizando Tarefa selecionada
+            axios
+            .put(`http://localhost:8080/api/task/${taskSelected.id}`, taskSelected)
+            .then(() => {
+              setData((prevDados) =>
+                prevDados.map((task) =>
+                  task.id === taskSelected.id ? taskSelected : task
+                )
+              );
+              closeModal();
+            })
+            .catch((error) => console.error('Erro ao atualizar tarefa:', error));
+        } else {
+          // Criando nova Tarefa
+          axios
+            .post('http://localhost:8080/api/task', {
+              title: newTask.title,
+              description: newTask.description,
+              status: false,
+            })
+            .then((response) => {
+              setData((prevDados) => [...prevDados, response.data]);
+              closeModal();
+            })
+            .catch((error) => console.error('Erro ao criar tarefa:', error));
+        }
+    };
+
+    // Função para deletar Tarefa na api
+    const handleDelete = () => {
+        if (taskSelected) {
+            const confirmDelete = window.confirm(
+                `Tem certeza de que deseja excluir a tarefa: ${taskSelected.title}?`
+            );
+            if (confirmDelete) {
+                axios
+                .delete(`http://localhost:8080/api/task/${taskSelected.id}`)
+                .then(() => {
+                    setData((prevDados) =>
+                        prevDados.filter((task) => task.id !== taskSelected.id)
+                    );
+                    closeModal();
+                })
+                .catch((error) => console.error('Erro ao excluir tarefa:', error));
+            }
+        }
+    };
+
     return (
         <>
             <div>
@@ -123,14 +174,14 @@ const Grid: React.FC = () => {
                                 Descrição:
                                 <input type="text" name="description" value={taskSelected ? taskSelected.description : newTask.description} onChange={handleChange}/>
                             </label>
-                            <button className='save-button'>
+                            <button className='save-button' onClick={handleSave}>
                                 Salvar
                             </button>
-                            <button className="cancel-button"  onClick={closeModal}>
+                            <button className="cancel-button" onClick={closeModal}>
                                 Cancelar
                             </button>
                             {taskSelected && (
-                            <button className='delete-button'>
+                            <button className='delete-button' onClick={handleDelete}>
                                 Excluir
                             </button>
                             )}
