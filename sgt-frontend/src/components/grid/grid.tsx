@@ -116,6 +116,32 @@ const Grid: React.FC = () => {
         }
     };
 
+    // Função para alternar o status da tarefa na api e no front
+    const changeStatus = async (id: number) => {
+
+        const task = data.find((task) => task.id === id);
+
+        if (task) {
+            const newStatus = !task.status;
+            try {
+                // Fazendo requisição PUT para atualizar o status na API
+                await axios.put(`http://localhost:8080/api/task/${id}`, {
+                    ...task,
+                    status: newStatus,
+                });
+          
+                // Atualizando o status no frontend
+                setData((prevDados) =>
+                    prevDados.map((task) =>
+                        task.id === id ? { ...task, status: newStatus } : task
+                    )
+                );
+            } catch (error) {
+                console.error("Erro ao atualizar o status da tarefa na API:", error);
+            }
+        }
+    };
+
     return (
         <>
             <div>
@@ -151,7 +177,14 @@ const Grid: React.FC = () => {
                             <tr key={task.id}>
                                 <td>{task.title}</td>
                                 <td>{task.description}</td>
-                                <td>{task.status ? 'Concluída' : 'Não Concluída'}</td>
+                                <td>
+                                    <span onClick={(e) => {
+                                        e.stopPropagation();
+                                        changeStatus(task.id);
+                                    }}>
+                                        {task.status ? 'Concluída' : 'Não Concluída'}
+                                    </span>
+                                </td>
                                 <td>
                                     <span className='edit-button' onClick={() => handleEditTaskClick(task)}>
                                         Editar
