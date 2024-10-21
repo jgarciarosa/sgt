@@ -6,4 +6,7 @@ CREATE TABLE IF NOT EXISTS `task` (
   PRIMARY KEY (`id`)
 );
 
-INSERT INTO `task` (`id`, `title`, `description`, `status`) VALUES (1, 'Teste', 'Teste', FALSE);
+INSERT INTO `task` (`id`, `title`, `description`, `status`)
+VALUES
+  (1, 'Tarefa 1', 'Não Cncluída', FALSE),
+  (2, 'Tarefa 2', 'Concluída', TRUE);
