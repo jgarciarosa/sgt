@@ -69,6 +69,25 @@ const Grid: React.FC = () => {
 
     // Função para salvar dados na api
     const handleSave = () => {
+        const taskToSave = taskSelected || newTask;
+        // Validação de campos obrigatórios
+        if (!taskToSave.title.trim() || !taskToSave.description.trim()) {
+            alert('Os campos "Título" e "Descrição" são obrigatórios.');
+            return;
+        }
+
+        // Validação de limite de caracteres do campo título
+        if (taskToSave.title.length > 25) {
+            alert('O campo "Título" não pode ter mais que 25 caracteres.');
+            return;
+        }
+
+        // Validação de limite de caracteres do campo descrição
+        if (taskToSave.description.length > 60) {
+            alert('O campo "Descrição" não pode ter mais que 60 caracteres.');
+            return;
+        }
+
         if (taskSelected) {
             // Atualizando Tarefa selecionada
             axios
