@@ -12,6 +12,12 @@ interface Task {
 const Grid: React.FC = () => {
     const [data, setData] = useState<Task[]>([]);
     const [filter, setFilter] = useState<'all' | 'finished' | 'unfinished'>('all');
+    const [modalOpen, setModalOpen] = useState(false);
+    const [taskSelected, setTaskSelected] = useState<Task | null>(null);
+    const [newTask, setNewTask] = useState<{ title: string; description: string }>({
+        title: '',
+        description: '',
+    });
 
     // Fetch todas tarefas
     useEffect(() => {
@@ -31,6 +37,34 @@ const Grid: React.FC = () => {
         return data;
     };
 
+    // Função para Adicionar nova Tarefa
+    const handleAddTaskClick = () => {
+        setNewTask({ title: '', description: '' });
+        setModalOpen(true);
+    };
+
+    // Função para Alterar dados de uma Tarefa
+    const handleEditTaskClick = (task: Task) => {
+        setTaskSelected(task);
+        setModalOpen(true);
+    };
+
+    // Função para mudar campos do modal quando for para cirar nova Tarefa ou alterar uma Tarefa
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        if (taskSelected) {
+            setTaskSelected({ ...taskSelected, [name]: value });
+        } else {
+            setNewTask({ ...newTask, [name]: value });
+        }
+    };
+
+    //Função para fechar o modal
+    const closeModal = () => {
+        setModalOpen(false);
+        setTaskSelected(null);
+    };
+
     return (
         <>
             <div>
@@ -47,7 +81,7 @@ const Grid: React.FC = () => {
                         <button onClick={() => setFilter('unfinished')}> 
                             Mostrar Não Concluídas 
                         </button>
-                        <button> 
+                        <button  onClick={handleAddTaskClick}> 
                             Adicionar nova Tarefa 
                         </button>
                     </div>
@@ -68,12 +102,41 @@ const Grid: React.FC = () => {
                                 <td>{task.description}</td>
                                 <td>{task.status ? 'Concluída' : 'Não Concluída'}</td>
                                 <td>
-                                    <span className='edit-button'>Editar</span>
+                                    <span className='edit-button' onClick={() => handleEditTaskClick(task)}>
+                                        Editar
+                                    </span>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+                {/* Modal */}
+                {modalOpen && (
+                    <div className="modal">
+                        <div className="modal-content">
+                            <h3>{taskSelected ? 'Editar Tarefa' : 'Criar Nova Tarefa'}</h3>
+                            <label>
+                                Título:
+                                <input type="text" name="title" value={taskSelected ? taskSelected.title : newTask.title} onChange={handleChange}/>
+                            </label>
+                            <label>
+                                Descrição:
+                                <input type="text" name="description" value={taskSelected ? taskSelected.description : newTask.description} onChange={handleChange}/>
+                            </label>
+                            <button className='save-button'>
+                                Salvar
+                            </button>
+                            <button className="cancel-button"  onClick={closeModal}>
+                                Cancelar
+                            </button>
+                            {taskSelected && (
+                            <button className='delete-button'>
+                                Excluir
+                            </button>
+                            )}
+                        </div>
+                    </div>
+                )}
                 </div>
             </div>
         </>
