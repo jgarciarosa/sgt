@@ -40,8 +40,17 @@ cd .\sgt\
 ```
 docker-compose up --build
 ```
+OBS: Na primeira vez pode demorar um tempo considerável para que terminem as instalações das dependências do projeto.<br>
+
+Aguarde até que as duas últimas mensagens no terminal sejam:
+```
+Tomcat started on port 8080 (http) with context path '/'
+Started SgtApplication in 3.799 seconds (process running for ...)
+```
 
 Pronto. A aplicação backend está disponível para uso, basta abrir no seu navegador: http://localhost:3000/
+
+Para finalizar a aplicação basta apertar as teclas Ctrl+c no terminal.
 
 
 # API
