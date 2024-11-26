@@ -1,105 +1,48 @@
 # SGT - Sistema de Gerenciamento de Tarefas
 
----
+# Descrição
+Aplicaão full stack simples de gerenciamento de tarefas, onde o usuário é capaz de adicionar, visualizar, atualizar e remover as tarefas de uma lista em um banco de dados MySQL. O back-end é um aplicativo Spring Boot que expõe uma API REST. O frontend é um aplicativo React que usa a API backend para salvar e recuperar dados do banco de dados.
 
 ## Tecnologias
 
 Backend:
 
-- [Java 23](https://docs.oracle.com/en/java/javase/23/)
+- Linguagens de programação: [Java](https://docs.oracle.com/en/java/javase/21/), [TypeScript](https://developer.mozilla.org/en-US/docs/Glossary/TypeScript)
 
-- [Spring Boot](https://spring.io/projects/spring-boot)
- 
-- [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
-
-- [Lombok](https://projectlombok.org/)
-
-- [Flyway Core](https://flywaydb.org/)
-
-BD:
-
-- [MySQL](https://www.mysql.com/)
-
-Frontend:
-
-- [React.TS](https://react.dev/learn/typescript)
-
-- [Axios](https://axios-http.com/docs/intro)
-
-IDE:
-
-- [Intellij Community](https://www.jetbrains.com/idea/download/?section=windows)
-
-- [Visual Studio Code](https://code.visualstudio.com/download)
-
-- [DBeaver Community](https://dbeaver.io/download/)
+- Frameworks: 
+  - [Spring Boot](https://spring.io/projects/spring-boot), [Maven](https://maven.apache.org/)
+    - [Spring Data JPA](https://spring.io/projects/spring-data-jpa) 
+    - [Lombok](https://projectlombok.org/)
+    - [Flyway Core](https://flywaydb.org/)
+  - [Vite](https://vite.dev/guide/), [React](https://react.dev/)
+    - [React.TS](https://react.dev/learn/typescript)
+    - [Axios](https://axios-http.com/docs/intro)
+  - Banco de Dados: [MySQL](https://www.mysql.com/)
+  - Conteinerização: [Docker](https://www.docker.com/)
+  - IDE: [Intellij Community](https://www.jetbrains.com/idea/download/?section=windows), [Visual Studio Code](https://code.visualstudio.com/download), [DBeaver Community](https://dbeaver.io/download/)
 
 
 # Setup da aplicação (local)
 
 ## Pré-requisito
 
-Antes de rodar a aplicação é preciso garantir que as seguintes dependências estejam corretamente instaladas:
+Precisa ter instalado [Docker](https://www.docker.com/)!
+-
+1. No seu terminal clone o repositório e entre na pasta do projeto
 ```
-Java JDK 23
-MySQL 8
-Maven 3.9.6 
-Node 20.13.1
-
-*Configurar variáveis de ambiente
+git clone https://github.com/jgarciarosa/sgt.git
 ```
-
-## Preparando ambiente
-
-É necessário a criação da base de dados relacional no MySQL
-
+2. Entre na pasta do projeto
 ```
-CREATE DATABASE 'sgt';
+cd .\sgt\
+```
+3. Execute o comando para construir e subir os containers
+```
+docker-compose up --build
 ```
 
-## Instalação da aplicação
+Pronto. A aplicação backend está disponível para uso, basta abrir no seu navegador: http://localhost:3000/
 
-Primeiramente, faça o clone do repositório:
-```
-https://github.com/jgarciarosa/sgt.git
-```
-Feito isso, acesse o projeto backend, e abra o mesmo com o IntelliJ e aguarde o download das dependências. Após:
-```
-* Go to File > Settings > Plugins
- * Click on 'Type / to see options'
- * Search for Lombok Plugin
- * Click on Install plugin
- * Restart IntelliJ IDEA 
-```
-Abra o arquivo SgtApplication.java, no diretório src/main/java:
-```
-*Se necessário defina a versão correta do JDK
-```
-Antes de iniciar o projeto, acesse o arquivo application.yml no diretório src/main/resources, e altere o campo password, com a senha configurada para o usuário root do seu banco:
-```
-password: Dev@1234
-```
-Finalizado esse passo, basta iniciar a aplicação.
-
-Pronto. A aplicação backend está disponível em http://localhost:8080/api/task
-
-<HR>
-
-Agora vamos para a execução do frontend:
-
-Abra no Visual Studio Code a pasta sgt-frontend, e no terminal digite o comando abaixo para instalar as dependências: 
-```
-npm install
-```
-
-Finalizado esse passo, basta iniciar a aplicação digitando o comando abaixo no terminal:.
-```
-npm run dev
-```
-
-Pronto. A aplicação backend está disponível em http://localhost:5173/
-
-<hr>
 
 # API
 
